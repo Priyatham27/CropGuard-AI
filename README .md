@@ -14,16 +14,22 @@
 
 <br/>
 
-```
-          ☁️          ☁️      ☁️                ☁️
-   ════════════ Dynamic Sky · Reacts to Every Scenario ════════════
-   🌾🌾 🌿 🌾🌾🌾 🌿🌿 🌾 🌿 🌾🌾 🌿 🌾🌾🌾 🌿 🌾🌾
-   ──────────── Cards staked into the field like boards ───────────
-   ░░ 🌱 Soil  ░░  💧 Irrigation  ░░  🌡 Climate  ░░  🐛 Pest  ░░
-   ░░░░░░░░░ Root-growth animations under every slider ░░░░░░░░░░░
-        🦋 butterfly drifts by        🔥 fireflies after 8 PM
-            🐞 ladybug on hover           🍃 leaves in the breeze
-```
+
+☁️          ☁️      ☁️                ☁️
+
+═══════════ Dynamic Sky · Reacts to Every Scenario ════════════
+
+🌾🌾 🌿 🌾🌾🌾 🌿🌿 🌾 🌿 🌾🌾 🌿 🌾🌾🌾 🌿 🌾🌾
+
+Cards staked into the field like boards
+
+░░ 🌱 Soil ░░ 💧 Irrigation ░░ 🌡 Climate ░░ 🐛 Pest ░░
+
+Root-growth animations under every slider
+
+🦋 butterfly drifts by · 🔥 fireflies after 8 PM
+
+🐞 ladybug on hover · 🍃 leaves in the breeze
 
 > **This isn't a dashboard. It's a field.**
 > Swaying grass, drifting leaves, dynamic weather skies, root-growth sliders,
