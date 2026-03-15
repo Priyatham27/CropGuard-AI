@@ -1,0 +1,114 @@
+/* ============================================================
+   theme.css — CropGuard AI
+   Light & Dark CSS custom properties
+   ============================================================ */
+
+/* ── LIGHT THEME (default) ── */
+[data-theme="light"] {
+  --bg-page:       #F7F6F2;
+  --bg-surface:    #FFFFFF;
+  --bg-hover:      #F1EFE8;
+  --border:        rgba(0,0,0,0.09);
+  --border-med:    rgba(0,0,0,0.16);
+  --text-primary:  #1a1a18;
+  --text-secondary:#4a4a46;
+  --text-muted:    #7a7a74;
+  --shadow-sm:     0 1px 4px rgba(0,0,0,0.07);
+  --shadow-md:     0 2px 16px rgba(0,0,0,0.08);
+  --nav-bg:        #FFFFFF;
+  --select-bg:     #FFFFFF;
+
+  /* Semantic palette */
+  --c-green:       #3B6D11;
+  --c-green-light: #EAF3DE;
+  --c-green-mid:   #97C459;
+  --c-amber:       #854F0B;
+  --c-amber-light: #FAEEDA;
+  --c-amber-mid:   #EF9F27;
+  --c-red:         #A32D2D;
+  --c-red-light:   #FCEBEB;
+  --c-red-mid:     #E24B4A;
+  --c-blue:        #185FA5;
+  --c-blue-light:  #E6F1FB;
+  --c-blue-mid:    #378ADD;
+  --c-teal:        #0F6E56;
+  --c-teal-light:  #E1F5EE;
+  --c-teal-mid:    #1D9E75;
+
+  /* Ring background */
+  --ring-bg:       #E8E6DF;
+
+  /* Chart grid */
+  --chart-grid:    #E8E6DF;
+  --chart-tick:    #888780;
+}
+
+/* ── DARK THEME ── */
+[data-theme="dark"] {
+  --bg-page:       #12120F;
+  --bg-surface:    #1C1C18;
+  --bg-hover:      #26261F;
+  --border:        rgba(255,255,255,0.09);
+  --border-med:    rgba(255,255,255,0.18);
+  --text-primary:  #E8E6DD;
+  --text-secondary:#B2B0A7;
+  --text-muted:    #7A7A72;
+  --shadow-sm:     0 1px 4px rgba(0,0,0,0.35);
+  --shadow-md:     0 2px 20px rgba(0,0,0,0.45);
+  --nav-bg:        #1C1C18;
+  --select-bg:     #26261F;
+
+  /* Semantic palette — shifted for dark readability */
+  --c-green:       #97C459;
+  --c-green-light: #1E2E10;
+  --c-green-mid:   #639922;
+  --c-amber:       #EF9F27;
+  --c-amber-light: #2E2008;
+  --c-amber-mid:   #BA7517;
+  --c-red:         #F09595;
+  --c-red-light:   #2C1010;
+  --c-red-mid:     #E24B4A;
+  --c-blue:        #85B7EB;
+  --c-blue-light:  #0C1E33;
+  --c-blue-mid:    #378ADD;
+  --c-teal:        #5DCAA5;
+  --c-teal-light:  #082A1E;
+  --c-teal-mid:    #1D9E75;
+
+  --ring-bg:       #2E2E26;
+  --chart-grid:    #2E2E26;
+  --chart-tick:    #666660;
+}
+
+/* ── BASE ── */
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: #c8e4a0; /* fallback if env not loaded */
+  color: var(--text-primary);
+  min-height: 100vh;
+  transition:
+    background 2s ease,
+    color 0.25s ease,
+    --sky-top 2s ease,
+    --sky-bottom 2s ease,
+    --nav-sky-top 2s ease,
+    --nav-sky-bottom 2s ease;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* ── THEME TRANSITION (smooth) ── */
+*, *::before, *::after {
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.15s ease,
+    box-shadow 0.2s ease;
+}
+
+/* BUT don't transition transforms / opacity (breaks animations) */
+input[type=range], canvas { transition: none; }

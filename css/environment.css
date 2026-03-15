@@ -1,0 +1,567 @@
+/* ============================================================
+   environment.css — CropGuard AI
+   Animated paddy field background, sky system, particle FX
+   ============================================================ */
+
+/* ── CSS CUSTOM PROPS FOR SKY SYSTEM ── */
+:root {
+  --sky-top:        #74C0E8;
+  --sky-bottom:     #B8DFF5;
+  --sky-ambient:    rgba(255, 235, 180, 0.18);
+  --sun-ray-color:  rgba(255, 220, 100, 0.22);
+  --field-tint:     rgba(120, 180, 60, 0.08);
+  --haze-color:     rgba(200, 240, 180, 0.12);
+  --nav-sky-top:    #4a9fd4;
+  --nav-sky-bottom: #88c8e8;
+  --nav-glow:       rgba(100, 200, 255, 0.12);
+}
+
+/* ── GLOBAL BODY BACKGROUND IS NOW THE FIELD ── */
+body {
+  background: transparent !important;
+  position: relative;
+}
+
+/* ── FIELD BACKGROUND LAYER ── */
+#field-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ── SKY GRADIENT BACKDROP ── */
+#sky-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(175deg, var(--sky-top) 0%, var(--sky-bottom) 60%, #D4E8A0 100%);
+  transition: background 2s ease, --sky-top 2s ease, --sky-bottom 2s ease;
+}
+
+/* ── SUNLIGHT RAYS (top-right) ── */
+#sun-rays {
+  position: fixed;
+  top: -10%;
+  right: -5%;
+  width: 70vw;
+  height: 100vh;
+  z-index: 1;
+  pointer-events: none;
+  transform-origin: top right;
+  overflow: hidden;
+}
+
+.sun-ray {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 2px;
+  height: 130vh;
+  background: var(--sun-ray-color);
+  transform-origin: top center;
+  border-radius: 2px;
+  animation: rayPulse 6s ease-in-out infinite;
+}
+
+@keyframes rayPulse {
+  0%,100% { opacity: 0.5; transform: scaleX(1); }
+  50%      { opacity: 1;   transform: scaleX(2.5); }
+}
+
+/* ── GRASS FIELD LAYER ── */
+#grass-field {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 45vh;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.grass-layer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── GRASS BLADE ANIMATIONS ── */
+@keyframes sway1 {
+  0%,100% { transform: rotate(-3deg) scaleY(1); }
+  25%     { transform: rotate(4deg)  scaleY(1.02); }
+  75%     { transform: rotate(-5deg) scaleY(0.99); }
+}
+@keyframes sway2 {
+  0%,100% { transform: rotate(2deg)  scaleY(1); }
+  33%     { transform: rotate(-6deg) scaleY(1.03); }
+  66%     { transform: rotate(5deg)  scaleY(0.98); }
+}
+@keyframes sway3 {
+  0%,100% { transform: rotate(-4deg) scaleY(1); }
+  40%     { transform: rotate(6deg)  scaleY(1.01); }
+  80%     { transform: rotate(-2deg) scaleY(1.02); }
+}
+@keyframes sway4 {
+  0%,100% { transform: rotate(1deg)  scaleY(1); }
+  50%     { transform: rotate(-7deg) scaleY(1.04); }
+}
+
+/* Dust particles floating in the field */
+@keyframes dustFloat {
+  0%   { transform: translate(0,0) scale(1); opacity: 0; }
+  10%  { opacity: var(--dust-opacity, 0.5); }
+  90%  { opacity: var(--dust-opacity, 0.5); }
+  100% { transform: translate(var(--dust-dx,80px),var(--dust-dy,-120px)) scale(0.4); opacity: 0; }
+}
+
+.dust-particle {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,220,120,0.9) 0%, rgba(255,200,80,0) 70%);
+  animation: dustFloat linear infinite;
+  pointer-events: none;
+}
+
+/* ── NAV SKY SYSTEM ── */
+.nav {
+  background: linear-gradient(135deg, var(--nav-sky-top) 0%, var(--nav-sky-bottom) 100%) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.25) !important;
+  box-shadow: 0 2px 24px var(--nav-glow), inset 0 1px 0 rgba(255,255,255,0.3) !important;
+  backdrop-filter: blur(8px);
+  transition: background 2s ease, box-shadow 2s ease !important;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+
+.nav-logo { color: #fff !important; text-shadow: 0 1px 6px rgba(0,0,0,0.2); }
+.nav-logo-icon { background-color: rgba(255,255,255,0.25) !important; }
+.nav-tab  { color: rgba(255,255,255,0.75) !important; }
+.nav-tab:hover { background: rgba(255,255,255,0.18) !important; color: #fff !important; }
+.nav-tab.active { background: rgba(255,255,255,0.28) !important; color: #fff !important; }
+.theme-toggle {
+  border-color: rgba(255,255,255,0.35) !important;
+  background: rgba(255,255,255,0.18) !important;
+  color: #fff;
+}
+.theme-toggle:hover { background: rgba(255,255,255,0.28) !important; }
+
+/* ── CLOUD ANIMATIONS ── */
+@keyframes cloudDrift {
+  from { transform: translateX(-120%); }
+  to   { transform: translateX(110vw); }
+}
+
+.cloud-shape {
+  position: absolute;
+  pointer-events: none;
+}
+
+/* ── CARDS — STAKED IN FIELD ── */
+.card, .metric-card, .rec-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(12px) saturate(1.4);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  border: 1px solid rgba(255,255,255,0.6) !important;
+  box-shadow:
+    0 4px 32px rgba(60, 100, 20, 0.13),
+    0 1px 0 rgba(255,255,255,0.7) inset,
+    0 12px 0 -4px rgba(80,50,20,0.08),
+    0 16px 0 -8px rgba(80,50,20,0.05) !important;
+  transform-style: preserve-3d;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 14px;
+  background: linear-gradient(to bottom, #8B6914, #5c3d0e);
+  border-radius: 0 0 2px 2px;
+  box-shadow: 12px 0 0 rgba(100,60,10,0.5), -12px 0 0 rgba(100,60,10,0.5);
+  z-index: -1;
+}
+
+.metric-card {
+  background: rgba(255, 255, 255, 0.82) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow:
+    0 2px 16px rgba(60, 100, 20, 0.10),
+    0 1px 0 rgba(255,255,255,0.8) inset !important;
+}
+
+/* Dark mode cards */
+[data-theme="dark"] .card,
+[data-theme="dark"] .metric-card,
+[data-theme="dark"] .rec-card {
+  background: rgba(20, 20, 16, 0.82) !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  box-shadow:
+    0 4px 32px rgba(0,0,0,0.4),
+    0 1px 0 rgba(255,255,255,0.08) inset !important;
+}
+
+/* ── PAGE WRAPPER WITH FIELD Z-LAYER ── */
+.page {
+  position: relative;
+  z-index: 10;
+}
+
+/* The field sits above sky, below page content */
+#grass-field { z-index: 3; }
+#particle-canvas { z-index: 5; }
+.page { z-index: 10; }
+.nav  { z-index: 200; }
+
+/* ── PARTICLE CANVAS ── */
+#particle-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* ── SCENARIO SKY STATES ── */
+/* Drought */
+body.sky-drought {
+  --sky-top:        #C0620A;
+  --sky-bottom:     #E8971A;
+  --sun-ray-color:  rgba(255, 150, 30, 0.35);
+  --nav-sky-top:    #a0480a;
+  --nav-sky-bottom: #c87020;
+  --nav-glow:       rgba(255, 120, 0, 0.25);
+  --field-tint:     rgba(180, 120, 30, 0.15);
+}
+
+/* Drought heat shimmer on cards */
+body.sky-drought .card {
+  animation: heatShimmer 3s ease-in-out infinite;
+}
+
+@keyframes heatShimmer {
+  0%,100% { backdrop-filter: blur(12px) saturate(1.4) brightness(1); }
+  50%     { backdrop-filter: blur(8px) saturate(1.8) brightness(1.04) hue-rotate(5deg); }
+}
+
+/* Flood */
+body.sky-flood {
+  --sky-top:        #1a2040;
+  --sky-bottom:     #2a3060;
+  --sun-ray-color:  rgba(60, 80, 180, 0.15);
+  --nav-sky-top:    #101828;
+  --nav-sky-bottom: #1e2848;
+  --nav-glow:       rgba(40, 60, 180, 0.3);
+  --field-tint:     rgba(30, 60, 120, 0.20);
+}
+
+/* Frost */
+body.sky-frost {
+  --sky-top:        #b8c8e8;
+  --sky-bottom:     #d8e4f8;
+  --sun-ray-color:  rgba(180, 210, 255, 0.28);
+  --nav-sky-top:    #8090ba;
+  --nav-sky-bottom: #a8b8d8;
+  --nav-glow:       rgba(160, 200, 255, 0.25);
+  --field-tint:     rgba(200, 230, 255, 0.18);
+}
+
+/* Pest outbreak */
+body.sky-pest {
+  --sky-top:        #4a3a18;
+  --sky-bottom:     #6a5428;
+  --sun-ray-color:  rgba(200, 160, 40, 0.2);
+  --nav-sky-top:    #3a2c10;
+  --nav-sky-bottom: #5a4418;
+  --nav-glow:       rgba(180, 130, 20, 0.3);
+  --field-tint:     rgba(60, 40, 0, 0.20);
+}
+
+/* ── SKY BACKDROP USES THE VARS ── */
+#sky-backdrop {
+  background: linear-gradient(175deg, var(--sky-top) 0%, var(--sky-bottom) 60%, #D4E8A0 100%);
+}
+
+/* Slow transitions ONLY for sky/nav — NOT body (body text needs fast 0.15s color transition) */
+#sky-backdrop, .nav {
+  transition: background 2s ease, box-shadow 2s ease, border-color 2s ease !important;
+}
+
+/* Body only transitions the background (transparent anyway), NOT color/text */
+body {
+  transition: background 0.3s ease !important;
+}
+
+/* ── RAIN STREAKS ── */
+@keyframes rainFall {
+  from { transform: translateY(-100px) translateX(0px); opacity: 0; }
+  10%  { opacity: 0.7; }
+  90%  { opacity: 0.5; }
+  to   { transform: translateY(110vh) translateX(60px); opacity: 0; }
+}
+
+.rain-streak {
+  position: fixed;
+  width: 1px;
+  border-radius: 1px;
+  pointer-events: none;
+  z-index: 6;
+  animation: rainFall linear infinite;
+  background: linear-gradient(to bottom, transparent, rgba(140,180,255,0.7), transparent);
+}
+
+/* ── SNOWFLAKES ── */
+@keyframes snowDrift {
+  0%   { transform: translateY(-10px) translateX(0px) rotate(0deg); opacity: 0; }
+  10%  { opacity: 0.8; }
+  100% { transform: translateY(105vh) translateX(var(--snow-drift, 40px)) rotate(360deg); opacity: 0; }
+}
+
+.snowflake-el {
+  position: fixed;
+  pointer-events: none;
+  z-index: 6;
+  color: rgba(200, 220, 255, 0.85);
+  animation: snowDrift linear infinite;
+  font-size: var(--snow-size, 14px);
+  top: -20px;
+}
+
+/* ── SWARM DOTS (pest) ── */
+@keyframes swarmMove {
+  0%   { transform: translate(0,0) scale(1); opacity: 0.6; }
+  25%  { transform: translate(var(--sx,20px), var(--sy,-15px)) scale(0.9); }
+  50%  { transform: translate(var(--sx2,40px), var(--sy2,10px)) scale(1.1); opacity: 0.8; }
+  75%  { transform: translate(var(--sx3,10px), var(--sy3,-25px)) scale(0.95); }
+  100% { transform: translate(0,0) scale(1); opacity: 0.6; }
+}
+
+.swarm-dot {
+  position: fixed;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(50, 30, 0, 0.6);
+  pointer-events: none;
+  z-index: 6;
+  animation: swarmMove ease-in-out infinite;
+}
+
+/* ── FIELD GROUND STRIP ── */
+#field-ground {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 22vh;
+  z-index: 2;
+  background: linear-gradient(
+    to top,
+    #3d5a1a 0%,
+    rgba(70, 100, 30, 0.9) 40%,
+    rgba(100, 140, 50, 0.6) 70%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+/* Puddle reflection (flood state) */
+body.sky-flood #field-ground {
+  background: linear-gradient(
+    to top,
+    #1a2a44 0%,
+    rgba(30, 50, 100, 0.85) 40%,
+    rgba(40, 70, 120, 0.5) 70%,
+    transparent 100%
+  );
+}
+
+/* Frost field tint */
+body.sky-frost #field-ground {
+  background: linear-gradient(
+    to top,
+    #b8d4e8 0%,
+    rgba(180, 210, 240, 0.7) 40%,
+    rgba(200, 220, 250, 0.35) 70%,
+    transparent 100%
+  );
+}
+
+/* ── SECTION HEAD — LIFTED ABOVE FIELD ── */
+.section-head {
+  text-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.section-title {
+  color: #1a2a0a !important;
+  text-shadow: 0 2px 8px rgba(255,255,255,0.5);
+}
+[data-theme="dark"] .section-title { color: #e8e6dd !important; }
+
+.section-sub { color: rgba(30,50,10,0.65) !important; }
+[data-theme="dark"] .section-sub { color: rgba(200,200,180,0.7) !important; }
+
+/* Content area glass panel — enough opacity to protect text against any sky */
+.page > .section-head {
+  background: rgba(255,255,255,0.60);
+  backdrop-filter: blur(12px) saturate(1.2);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  border-radius: 12px;
+  padding: 16px 20px;
+  border: 1px solid rgba(255,255,255,0.65);
+  margin-bottom: 24px;
+}
+
+[data-theme="dark"] .page > .section-head {
+  background: rgba(10,15,5,0.72);
+  border-color: rgba(255,255,255,0.12);
+}
+
+/* ── LIGHT MODE: ensure inner card text is always dark (prevent any bleed) ── */
+:not([data-theme="dark"]) .explain-text,
+:not([data-theme="dark"]) .explain-bold,
+:not([data-theme="dark"]) .explain-note,
+:not([data-theme="dark"]) .rec-desc,
+:not([data-theme="dark"]) .rec-title {
+  color: var(--text-primary) !important;
+}
+
+/* Fast text-color transition on all content elements (override body slowness) */
+.card, .metric-card, .rec-card,
+.card *, .metric-card *, .rec-card * {
+  transition-property: color, background-color, border-color, box-shadow !important;
+  transition-duration: 0.18s !important;
+  transition-timing-function: ease !important;
+}
+
+/* ──────────────────────────────────────────────────────────
+   WIND NAV BUTTON (base — full panel styles injected by wind.js)
+   ────────────────────────────────────────────────────────── */
+#wind-sound-btn {
+  flex-shrink: 0;
+  margin-left: 4px;
+  position: relative;
+}
+
+.wind-nav-label { font-size: 11px; white-space: nowrap; }
+
+.wind-bar-wrap {
+  width: 28px; height: 5px;
+  background: rgba(255,255,255,0.18);
+  border-radius: 3px;
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 2px;
+}
+
+.wind-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #80e880, #c8ff40);
+  transition: width 0.5s ease;
+  display: block;
+  width: 20%;
+}
+
+
+
+/* ──────────────────────────────────────────────────────────
+   BUTTERFLY WRAP
+   ────────────────────────────────────────────────────────── */
+#butterfly-wrap {
+  position: fixed;
+  pointer-events: none;
+  z-index: 25;
+  top: 0; left: 0;
+  display: none;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.15));
+}
+
+/* ──────────────────────────────────────────────────────────
+   FIREFLY LAYER
+   ────────────────────────────────────────────────────────── */
+#firefly-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 22;
+}
+
+/* ──────────────────────────────────────────────────────────
+   LADYBUG
+   ────────────────────────────────────────────────────────── */
+#ladybug {
+  position: absolute;
+  bottom: -6px;
+  left: 20px;
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+/* ──────────────────────────────────────────────────────────
+   SOIL ROOT WIDGET (below soil slider)
+   ────────────────────────────────────────────────────────── */
+#soil-root-wrap {
+  margin-top: 8px;
+  border-radius: 0 0 10px 10px;
+  overflow: hidden;
+}
+
+.soil-health-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-align: center;
+  padding: 3px 8px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-radius: 4px 4px 0 0;
+}
+
+.root-container {
+  border-radius: 0 0 8px 8px;
+  overflow: hidden;
+  transition: height 0.6s cubic-bezier(0.34,1.1,0.64,1);
+}
+
+/* ──────────────────────────────────────────────────────────
+   FIELD MODE PARALLAX LAYERS
+   ────────────────────────────────────────────────────────── */
+#fm-sky-layer,
+#fm-mid-layer,
+#fm-fg-layer {
+  position: fixed;
+  pointer-events: none;
+  will-change: transform;
+  transition: transform 0.15s ease-out;
+}
+
+/* ──────────────────────────────────────────────────────────
+   GAUGE TICKS (field mode score ring)
+   ────────────────────────────────────────────────────────── */
+#gauge-ticks {
+  position: absolute;
+  top: 0; left: 0;
+  pointer-events: none;
+}
+
+#ring-needle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 3px;
+  pointer-events: none;
+}
+
